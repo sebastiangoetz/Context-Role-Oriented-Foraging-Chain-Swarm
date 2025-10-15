@@ -29,7 +29,7 @@ end
 @assignRoles ChainTeam begin
 	name = 3
 	nest >> Nest()
-	getDynamicTeam(SingleRobotChainTeam, 2) >> ChainCreation()
+	getDynamicTeam(SingleRobotChainTeam, 2) >> SingleRobotChain()
 	robotSelf >> Intermediate()
 end
 @assignRoles JoinChainTeam begin
