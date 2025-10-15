@@ -19,7 +19,7 @@ bufferSize = 1024
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 2000+int(number[0])*2 # Port to listen on (non-privileged ports are > 1023)
 addrPort = (HOST,PORT)
-DIST_TOLERANCE = 0.05
+DIST_TOLERANCE = 0.15
 DIST_LOADING = 0.3
 
 # receives Messages from the Webapp, 

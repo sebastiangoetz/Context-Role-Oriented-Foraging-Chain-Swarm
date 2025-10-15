@@ -19,7 +19,7 @@ streamWebApp = connect(ip"127.0.0.1", 3004)
 robotSelf = Robot(robot_name, 2000, false, false, Position(0,0), false, false, false)
 robotSelf2 = Robot("dummy", 2002, false, false, Position(0,0), false, false, false)
 
-# Precompilation of Teams to reduce delay
+# Begin Precompilation of Teams to reduce delay
 @assignRoles SingleRobotChainTeam begin
 	name = 2
 	nest = nest
@@ -37,9 +37,7 @@ end
 	robotSelf >> JoinChainMember(false)
 	robotSelf2 >> ChainMember()
 end
-disassignRoles(ChainTeam, 3)
-disassignRoles(SingleRobotChainTeam, 2)
-disassignRoles(JoinChainTeam, 37)
+disassignAllRoles()
 # End Precompilation
 
 # send Initial Messages to Single-Robot-Loop
@@ -136,7 +134,6 @@ while true
 	global datafromSRL_old, message_old, waiting, counter, t1, robotSelf
 	if datafromSRL.goalReached || robotSelf.waiting
 		counter+=1
-		println(counter)
 	end
 	if counter >= 200 || datafromSRL.load != datafromSRL_old.load || datafromSRL.goalReached != datafromSRL_old.goalReached || datafromSRL.proximity != datafromSRL_old.proximity || message[1][1] != message_old[1][1] || size(message) != size(message_old)
 		robotSelf.waiting = false

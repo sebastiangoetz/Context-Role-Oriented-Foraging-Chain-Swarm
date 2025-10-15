@@ -18,6 +18,19 @@ nest = Position(-3,1.2)
 obj = Object(2,2000)
 first_time = true
 
+function disassignAllRoles()
+    if getRoles(robotSelf) !== nothing
+        println(keys(getRoles(robotSelf)[nothing]))
+		disassignRoles(ChainTeam, 3)
+		if getRoles(robotSelf) !== nothing
+			teams = keys(getRoles(robotSelf)[nothing])
+			for team in teams
+				disassignRoles(typeof(team), team.ID )
+			end
+		end
+		
+    end
+end
 
 function assignSingleRobotChainTeams(prey)
 	global nest, robotSelf
@@ -52,7 +65,7 @@ function assignSingleRobotChainTeams(prey, load)
 end
 
 function disassignJoinChainTeams()
-	# disassign JoinChainTeam and if Robot ha no other Role the ChainTeam as well 
+	# disassign JoinChainTeam and if Robot has no other Role the ChainTeam as well 
 	if length(keys(getRoles(robotSelf)[nothing])) > 1
 		@changeRoles ChainTeam 3 begin
 			getDynamicTeam(JoinChainTeam, 37) << RobotJoining
@@ -74,7 +87,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	# add load state of the robot into swarm-model and robot attributes 
 	if getRoles(robotSelf) !== nothing
 		if dataMiddle.load == true
-			#println(keys(getRoles(robotSelf)[nothing]))
+			println(keys(getRoles(robotSelf)[nothing]))
 			teams = keys(getRoles(robotSelf)[nothing])
 			for team in teams
 				if isempty(getObjectsOfRole(team, Load))
@@ -211,7 +224,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 
 		# Robot has no Prey in History --> switch back to Exploration
 		elseif getDynamicTeam(ChainTeam, 3) !== nothing && isempty(getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Prey)) 
-			disassignRoles(ChainTeam, 3)
+			disassignAllRoles()
 			println("timeout: only chain disassigned")
 
 		# Robot is Head or Tail and prey is known --> switch back to SingleRobotChainTeam
@@ -219,7 +232,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 		elseif hasRole(robotSelf, Head, ChainTeam) || hasRole(robotSelf, Tail, ChainTeam)
 			prey = getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Prey)[1]
 			if robotSelf.load # robot is Head
-				load = getObjectsOfRole(getDynamicTeam(ChainTeam, 37), Load)[1]
+				load = getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Load)[1]
 				disassignRoles(ChainTeam, 3)
 				assignSingleRobotChainTeams(prey, load)
 			else # robot is Tail
