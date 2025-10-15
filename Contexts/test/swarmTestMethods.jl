@@ -4,17 +4,6 @@ include("../swarmElementLoop/MAPE.jl")
 
 robotSelf = Robot("test", 2000, false, false, Position(0,0), false, false, false)
 
-function disassignAll()
-    if getRoles(robotSelf) !== nothing
-        println(keys(getRoles(robotSelf)[nothing]))
-        teams = keys(getRoles(robotSelf)[nothing])
-        for team in teams
-            disassignRoles(typeof(team), team.ID )
-        end
-        disassignRoles(CHainTeam, 3)
-    end
-end
-
 @testset "Swarm" begin
 
     @testset "SingleRobotChain Methods" begin
@@ -25,17 +14,16 @@ end
         @test hasRole(robotSelf, ChainMember, SingleRobotChainTeam)
         @test isempty(getObjectsOfRole(getDynamicTeams(SingleRobotChainTeam)[1], Load))
         @test getObjectsOfRole(getDynamicTeams(SingleRobotChainTeam)[1], Prey)[1] == testPrey
-
+        disassignAllRoles()
         # with load
         testLoad = Object(1,2)
         assignSingleRobotChainTeams(testPrey, testLoad)
         @test hasRole(robotSelf, ChainMember, SingleRobotChainTeam)
-        sleep(0.5)
         @test !isempty(getObjectsOfRole(getDynamicTeams(SingleRobotChainTeam)[1], Load))
         @test getObjectsOfRole(getDynamicTeams(SingleRobotChainTeam)[1], Prey)[1] == testPrey
 
     end
-    disassignAll()
+    disassignAllRoles()
 
     @testset "SingleRobotChain without Load, Robot with Load detected" begin
         testNest = Position(1,1)

@@ -88,7 +88,7 @@ Verify Installation
     - run: python3 swarmDisplay.py
     - install required pip packages (pip install -r requirements.txt
     - quit application
-
+ 
 ## Run Application
 - in /ros_ws run: 
     - source install/setup.bash
