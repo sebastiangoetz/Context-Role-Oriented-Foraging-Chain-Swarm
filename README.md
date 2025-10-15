@@ -94,7 +94,7 @@ Verify Installation
     - source install/setup.bash
     - argos3 -c bridge_example.argos
     - start simulation by clicking the **play** button
-- in webapp run:
+- in webapp run (absolutely necessary before starting the robots):
     - source bin/activate
     - python3 swarmDisplay.py
     - connect to Webapp via link
