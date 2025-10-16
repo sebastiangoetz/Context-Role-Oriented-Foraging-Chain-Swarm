@@ -2,14 +2,37 @@
 
 This repository contains the code of our implmentation of a Foraging Chain Swarm in ARGoS3 using Context-Role-Oriented Programming.
 
+The overall system is comprised of multiple subsystems, which have to be installed and started independently. 
+
+We use ROS2 Jazzy, which is only easy to install if you follow the version restrictions for the underlying Linux. 
+In terms of performance, we encourage to install <b>Ubuntu 24.04 (not 24.10 or the latest version)</b> bare-bones, i.e., not in a virtual machine.
+Using a virtual machine is possible, but degrades performance considerably.
+
+A detailed description of how to install ROS2 on your system can be found [here](https://docs.ros.org/en/jazzy/Installation.html).
+
+Besides ROS2, we use ARGoS3 as simulator. Instructions on how to install the simulator can be found below.
+
+Our prototype is comprised of five main parts in the following subdirectories:
+
+- Contexts: contains the implementation of the <b>Swarm Element Loop</b> using [Contexts.jl](https://github.com/cgutsche/Contexts.jl)
+- rosWorkspace: contains the implementation of the [ROS2-ARGoS3 bridge](https://github.com/einstein07/collective-decision-making-argos-ros2) including the UI extensions for our example (e.g., showing the names of the robots in ARGoS3)
+- runtime model: contains the single robot loop implemented in Python using PyEcore for the runtime model
+- messages: contains the messages component responsible to process the monitored sensor values from the robots and to pass them to the swarm element loop
+- webapp: contains the dashboard to observe the overall system
+
+The runtime model, messages and webapp components all use Python and require an own Python Environment to install the required dependencies.
+The Contexts component requires Julia to be installed.
+
+Due to the multitude of components we could not provide a ready-to-use image or Docker files. Find the detailed installation and startup instructions below.
+
 ## System Requirements
 
 - Ubuntu 24.04.2 LTS
 - ROS2 Jazzy Desktop (sudo apt install ros-jazzy-desktop)
+- colcon (sudo apt install colcon)
 - python 3.12
 - python venv (sudo apt install python3.12-venv)
 - julia 1.11.6 (curl -fsSL https://install.julialang.org | sh)
-- colcon (sudo apt install colcon)
 - rqt
 - tmux 3.4 (sudo apt-get install tmux)
 
@@ -50,42 +73,40 @@ Verify Installation
     - 'export LD_LIBRARY_PATH=*/path/to/library*:$LD_LIBRARY_PATH' >> ~/.bashrc 
 
 ## Install Application
-- chmod +x ./startup.sh
 
 ### Simulation
-- copy the content of the rosWorkspace Folder in your ros_ws directory
+- create a symlink ros_ws in your home directory pointing the the rosWorkspace directory in this repository
+  - cd ~
+  - ln -s path-to-repo/rosWorkspace ros_ws
 - in the directory ros_ws:
-    - source /opt/ros/jazzy/setup.bash
+    - source /opt/ros/jazzy/setup.bash (if not already part of your .bashrc)
     - in src/argos3-ros2-bridge/CMakeLists.txt comment out line 60: add_subdirectory(plugins) for the first build
-    - colcon build --packages-select argos3_ros2_bridge
+    - colcon build 
     - uncomment line 60 and build it again
     - source install/setup.bash
     - argos3 -c bridge_example.argos
     - simulation should be ready
 
 ### Swarm-Element-Loop
-- in terminal enter:
+- To install all required Julia packages, in terminal enter:
     - julia
     - import Pkg 
     - Pkg.add("Sockets")
     - Pkg.add("JSON")
     - Pkg.add("Parameters")
+    - exit()
 
 ### Single-Robot-Loop
 - in runtimemodel and messages folder setup venv:
     - open terminal and create python venv: python3 -m venv ./
     - source bin/activate
-    - run: python3 main.py
     - install required pip packages (pip install pyyaml numpy pyecore)
-    - quit application
 
 ### Webapp
 - in webapp folder setup venv:
     - open terminal and create python venv: python3 -m venv ./
     - source bin/activate
-    - run: python3 swarmDisplay.py
-    - install required pip packages (pip install -r requirements.txt
-    - quit application
+    - install required pip packages (pip install -r requirements.txt)
  
 ## Run Application
 - in /ros_ws run: 
@@ -96,10 +117,11 @@ Verify Installation
     - source bin/activate
     - python3 swarmDisplay.py
     - connect to Webapp via link
+    - do not worry that the page is currently empty - boxes will appear as soon as you startup the robots
 
 - ./startup.sh [footbot-name] (e.g. fb_0)
 - current simulation has red light as prey, orange ligth as nest and fb_1 to fb_6 for the Chain Task
-- so start the command above for all three robots in seperate terminals 
+- so start the command above for all robots in seperate terminals 
 - wait until robot is driving before starting the next one!! (otherwise tmux is confused) 
 - left pane shows output from Swarm Element Loop
 - right top Pane shows output from Single Robot Loop
@@ -108,3 +130,6 @@ Verify Installation
 - stop Application:
     - Strg+b d  (to detach from tmux)
     - tmux kill-server
+
+- If you just start one robot, it will drive between Prey and Nest alone
+- If you start multiple robots, the will form a chain
