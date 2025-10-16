@@ -1,6 +1,6 @@
-# MA Adrian Scholze
+# Using Context Role-oriented Programming for Swarms to Alleviate the Micro-Macro Problem
 
-
+This repository contains the code of our implmentation of a Foraging Chain Swarm in ARGoS3 using Context-Role-Oriented Programming.
 
 ## System Requirements
 
@@ -50,8 +50,6 @@ Verify Installation
     - 'export LD_LIBRARY_PATH=*/path/to/library*:$LD_LIBRARY_PATH' >> ~/.bashrc 
 
 ## Install Application
-- git clone git@github.com:XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm.git
-- cd Context-Role-Oriented-Transport-Chain-Swarm
 - chmod +x ./startup.sh
 
 ### Simulation
@@ -110,17 +108,3 @@ Verify Installation
 - stop Application:
     - Strg+b d  (to detach from tmux)
     - tmux kill-server
-
-## Demo
-
-Short Teaser:
-
-[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/6gFN5Zp4-fo)
-
-Explanation 1:
-
-[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/4wl4qiH0HfQ)
-
-Explanation 2:
-
-[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/RyUZocn-PCA)
