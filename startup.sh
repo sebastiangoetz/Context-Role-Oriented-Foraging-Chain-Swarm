@@ -40,15 +40,4 @@ else
     tmux attach-session -t $SESSION_NAME
 fi
 
-# source "runtimemodel/bin/activate"
-# source /home/adrian/ros_ws/install/setup.bash
-
-# julia Contexts/examples/mainMAPE.jl $1 &
-
-# sleep 3s
-
-# python3 runtimemodel/main.py $1 &
-# python3 messages/main.py $1
-
-
 
