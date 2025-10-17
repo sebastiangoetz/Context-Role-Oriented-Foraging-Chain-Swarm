@@ -133,3 +133,7 @@ Verify Installation
 
 - If you just start one robot, it will drive between Prey and Nest alone
 - If you start multiple robots, the will form a chain
+
+Here's how the running application looks like for 3 robots that successfully formed a foraging chain.
+
+<img alt="foraging-chain" src="https://github.com/user-attachments/assets/b74e760d-5b4d-4cf0-b03c-bf71a49cc38f" />
