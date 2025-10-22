@@ -73,23 +73,44 @@ Verify Installation
     - Pkg.add("JSON")
     - Pkg.add("Parameters")
 
-### Single-Robot-Loop
+### Startup 
+- in startup folder setup venv:
+    - open terminal and create python venv: python3 -m venv ./
+    - source bin/activate
+    - install required pip packages (pip install -r requirements.txt)
+
+
+### Single-Robot-Loop (requried only for single Robot startup)
 - in runtimemodel and messages folder setup venv:
     - open terminal and create python venv: python3 -m venv ./
     - source bin/activate
+    - install required pip packages (pip install -r requirements.txt)
     - run: python3 main.py
-    - install required pip packages (pip install pyyaml numpy pyecore)
     - quit application
 
-### Webapp
+### Webapp (requried only for single Robot startup)
 - in webapp folder setup venv:
     - open terminal and create python venv: python3 -m venv ./
     - source bin/activate
+    - install required pip packages (pip install -r requirements.txt)
     - run: python3 swarmDisplay.py
-    - install required pip packages (pip install -r requirements.txt
     - quit application
- 
+
 ## Run Application
+### Run Simulation 
+- in /ros_ws run: 
+    - source install/setup.bash
+    - argos3 -c bridge_example.argos
+    - start simulation by clicking the **play** button
+
+### Run Robots via startup script
+- in main folder run:
+    - source ~/ros_ws/install/setup.bash
+    - source ./startup/bin/activate
+    - python3 ./startup/automatedStartup.py
+- runs Webapp and the Robots with its 3 Components successive
+
+### Run Robots one by one (alternative to startup script --> seperate output for each Robot)
 - in /ros_ws run: 
     - source install/setup.bash
     - argos3 -c bridge_example.argos
@@ -110,6 +131,18 @@ Verify Installation
 - stop Application:
     - Strg+b d  (to detach from tmux)
     - tmux kill-server
+
+### Run Tests
+- in main folder run:
+    - source ~/ros_ws/install/setup.bash
+    - source ./startup/bin/activate
+- run Tests with (e.g.):
+    - python3 RobotWithLoadDetected.py
+- Test: PreyDetected.py runs Test only once, because this Action can not be reseted without restarting the application. 
+- After running all tests the ExecutionTime can be calculated with ./ExecutionTimeMeasurements/timePlotToolFSET_4Cases.py
+- For that execute in main folder:
+    - source ./ExecutionTimeMeasurements/bin/activate
+    - python3 ./ExecutionTimeMeasurements/timePlotToolFSET_4Cases.py
 
 ## Demo
 

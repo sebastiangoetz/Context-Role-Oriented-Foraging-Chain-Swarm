@@ -7,14 +7,6 @@ using DelimitedFiles
 robot_name = ARGS[1]
 robot_number = parse(Int64, filter(x->'0'<=x<='9',robot_name))
 
-# start sockets for connection to messages and single robot loop
-server = listen(ip"127.0.0.1", 2000+robot_number*2)
-sockSRL = accept(server)
-server2 = listen(ip"127.0.0.1", 2000+robot_number*2+1)
-sockMSG = accept(server2)
-
-streamWebApp = connect(ip"127.0.0.1", 3004)
-
 # new robot --> Self
 robotSelf = Robot(robot_name, 2000, false, false, Position(0,0), false, false, false)
 robotSelf2 = Robot("dummy", 2002, false, false, Position(0,0), false, false, false)
@@ -39,6 +31,14 @@ end
 end
 disassignAllRoles()
 # End Precompilation
+
+# start sockets for connection to messages and single robot loop
+server = listen(ip"127.0.0.1", 2000+robot_number*2)
+sockSRL = accept(server)
+server2 = listen(ip"127.0.0.1", 2000+robot_number*2+1)
+sockMSG = accept(server2)
+
+streamWebApp = connect(ip"127.0.0.1", 3004)
 
 # send Initial Messages to Single-Robot-Loop
 write(sockSRL, "start")
@@ -89,7 +89,8 @@ function sendMessageToWebapp(pos, state, led)
             "xTarget" => pos.x,
             "yTarget" => pos.y,
             "state" => state,
-            "led" => led
+            "led" => led,
+			"goalGiven" => robotSelf.goalGiven
         )
 
 		# Insert roles and teams as array
@@ -137,7 +138,7 @@ while true
 	end
 	if counter >= 200 || datafromSRL.load != datafromSRL_old.load || datafromSRL.goalReached != datafromSRL_old.goalReached || datafromSRL.proximity != datafromSRL_old.proximity || message[1][1] != message_old[1][1] || size(message) != size(message_old)
 		robotSelf.waiting = false
-
+		
 		#println(getRoles(robotSelf))
 		goal = mapeLoop(datafromSRL, message, counter >= 200)
 		if goal !== nothing

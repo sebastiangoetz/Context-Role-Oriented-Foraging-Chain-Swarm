@@ -17,7 +17,7 @@ else
     #tmux attach-session -t $SESSION_NAME 
 
 
-    sleep 5s
+    sleep 10s
 
     # Create a new session and name it
     tmux new-session -d -s $SESSION_NAME

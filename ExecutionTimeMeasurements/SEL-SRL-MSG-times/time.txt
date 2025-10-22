@@ -1,0 +1,43 @@
+nothing changedFirst Exploration time:0.2836599349975586
+nothing changed time:0.011367082595825195
+prey detected time:0.047163963317871094
+prey detected time:0.037008047103881836
+prey detected time:0.0002200603485107422
+Robot with Load perceived time:0.2670769691467285
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.000148773193359375
+prey detected time:0.0003349781036376953
+prey detected time:0.09945106506347656
+Robot with Load perceived time:0.0004189014434814453
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.00031495094299316406
+prey detected time:0.0002548694610595703
+prey detected time:0.000286102294921875
+Robot with Load perceived time:0.09291195869445801
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.03690695762634277
+prey detected time:0.028634071350097656
+prey detected time:0.06352496147155762
+Robot with Load perceived time:0.05751180648803711
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.06856894493103027
+prey detected time:0.05950307846069336
+prey detected time:0.012974977493286133
+Robot with Load perceived time:0.08675217628479004
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.007550954818725586
+prey detected time:0.09969902038574219
+prey detected time:0.03947186470031738
+Robot with Load perceived time:0.03910994529724121
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.0939640998840332
+prey detected time:0.07568597793579102
+prey detected time:0.03342485427856445
+Robot with Load perceived time:0.09055089950561523
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.08856201171875
+prey detected time:0.07984018325805664
+prey detected time:0.04243206977844238
+Robot with Load perceived time:0.09873104095458984
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.007542133331298828
+prey detected time:0.09975290298461914
+prey detected time:0.04150390625
+Robot with Load perceived time:0.0798180103302002
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.09169507026672363
+prey detected time:0.08362102508544922
+prey detected time:0.013417959213256836
+Robot with Load perceived time:0.05977916717529297
+deactivateJoinChain() (JoinChainTeam:JoinChainMember) time:0.05077409744262695

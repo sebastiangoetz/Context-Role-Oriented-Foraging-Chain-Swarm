@@ -94,6 +94,9 @@ robotSelf = Robot("test", 2000, false, false, Position(0,0), false, false, false
         @test goal[3] == "black"
         @test isempty(getObjectsOfRole(getDynamicTeams(ChainTeam)[1], Load))
 
+        data = DatafromSRL(-3,1.2,false,false, false)
+        goal = mapeLoop(data,message, false)
+
         # transferpoint reached --> waiting
         data = DatafromSRL(1.8,1, false, true, false)
         goal = mapeLoop(data,message, false)

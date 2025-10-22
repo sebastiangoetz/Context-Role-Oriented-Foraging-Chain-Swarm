@@ -34,6 +34,7 @@ def getAngleDif(a,b):
 blobs_old = []
 # ##### MAPE-Loop
 while(True):
+    #start = time.time()
     blobs = robotSupervisor.getBlobs()
     if blobs_old != [] and blobs == []: #send a last nothing message, before stop sending
         print("last message")
@@ -69,9 +70,13 @@ while(True):
                 messageList.append(["Joiner detected", xAbs, yAbs])
         if messageList == []: 
             messageList.append(["nothing", 0, 0])
-        print(json.dumps(messageList))
+        #print(json.dumps(messageList))
         udpServerSocket.send(str.encode(json.dumps(messageList)+ "\n"))
     blobs_old = blobs
+    
+    # end = time.time()
+    # with open("timeMSG.txt", "a", encoding="utf-8") as f:
+    #     f.write("time:"+ str(end-start)+"\n")
     time.sleep(0.1)
 
 robotSupervisor.destroy_node()

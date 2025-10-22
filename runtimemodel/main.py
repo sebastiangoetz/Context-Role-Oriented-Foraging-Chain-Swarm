@@ -90,6 +90,7 @@ threading.Thread(target=lambda: publishMessages()).start()
 
 ##### MAPE-Loop
 while(True): 
+    #start = time.time()
     #Monitor
     robot1.setPos(robotSupervisor.getxPos(), robotSupervisor.getyPos(),robotSupervisor.getzPos(), robotSupervisor.getTheta())
     robot1.setLoad(robotSupervisor.getLoad())
@@ -122,9 +123,13 @@ while(True):
         robotSupervisor.publishVelocity(robot1.speed,robot1.rotationSpeed)
     
     if (robot1.speed == 0.0):
+        #print(robot1.state.getrelease())
         robotSupervisor.publishGripper(robot1.state.getgrip(), robot1.state.getrelease())
     
     robotSupervisor.publishLight(robot1.ledColor) # TODO: with condition, publish only when changed
+    # end = time.time()
+    # with open("timeSRL.txt", "a", encoding="utf-8") as f:
+    #     f.write("time:"+ str(end-start)+"\n")
 
 robotSupervisor.destroy_node()
 rclpy.shutdown()

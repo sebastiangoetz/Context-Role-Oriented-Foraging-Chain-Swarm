@@ -1,0 +1,163 @@
+nothing changedexplorationFirst time:0.260699987411499
+nothing changedexploration time:0.03820204734802246
+nothing changedexploration time:0.028400897979736328
+nothing changedexplorationFirst time:0.314284086227417
+prey detected time:0.08374404907226562
+to close to prey time:0.04422903060913086
+prey detected time:0.08993792533874512
+to close to prey time:0.02510380744934082
+to close to prey time:0.02438497543334961
+prey detected time:0.019713878631591797
+to close to prey time:0.03128314018249512
+to close to prey time:0.021487951278686523
+to close to prey time:0.03034806251525879
+to close to prey time:0.021535873413085938
+to close to prey time:0.10072803497314453
+nothing changedexplorationFirst time:0.35161495208740234
+to close to prey time:0.07549595832824707
+to close to prey time:0.06742000579833984
+to close to prey time:0.04246401786804199
+to close to prey time:0.08267593383789062
+to close to prey time:0.05145907402038574
+to close to prey time:0.05357694625854492
+to close to prey time:1.8835067749023438e-5
+to close to prey time:0.04385495185852051
+to close to prey time:0.04474210739135742
+to close to prey time:0.02203202247619629
+to close to prey time:0.021610021591186523
+to close to prey time:0.02239704132080078
+to close to prey time:0.022312164306640625
+JoinChainMember executed time:0.020354032516479492
+to close to prey time:1.71661376953125e-5
+nothing changedexplorationFirst time:0.3569068908691406
+Chainmember(Join) enabled time:0.5776538848876953
+Chainmember(join) fallback time:0.00017213821411132812
+JoinChainMember fallbackexploration time:0.0001709461212158203
+JoinChainMember executed time:0.10071802139282227
+prey detected time:0.04294896125793457
+nothing changedexploration time:0.011397838592529297
+JoinChainMember executed time:8.106231689453125e-6
+Chainmember(Join) enabled time:0.03614401817321777
+to close to prey time:0.019366025924682617
+to close to prey time:0.02105998992919922
+nothing changedexplorationFirst time:0.4193089008331299
+Robot with load Position updated time:0.3996720314025879
+Chainmember(join) fallback time:0.014713048934936523
+nothing changedexploration time:0.008388042449951172
+nothing changedexploration time:0.00840902328491211
+JoinChainMember switch to load state time:0.05528092384338379
+nothing changed time:0.00033092498779296875
+nothing changed time:0.00048089027404785156
+nothing changed time:0.0003440380096435547
+JoinChainMember fallbackexploration time:0.023558855056762695
+nothing changedexploration time:0.022395849227905273
+nothing changedexploration time:0.000186920166015625
+nothing changedexploration time:0.0002830028533935547
+prey detected time:0.06630992889404297
+prey detected time:0.021655797958374023
+nothing changedexplorationFirst time:0.09056806564331055
+to close to prey time:0.41434788703918457
+to close to nest time:0.08427000045776367
+to close to nest time:0.0002532005310058594
+to close to nest time:0.0023980140686035156
+nothing changedexploration time:0.027491092681884766
+nothing changedexploration time:0.021358013153076172
+to close to prey time:0.056610107421875
+to close to prey time:0.0263669490814209
+JoinChainMember executedexploration time:0.052674055099487305
+prey detected time:0.1276400089263916
+to close to prey time:0.02992391586303711
+to close to prey time:0.0364229679107666
+to close to prey time:0.004291057586669922
+to close to prey time:2.002716064453125e-5
+to close to prey time:0.026043176651000977
+to close to prey time:0.02632308006286621
+to close to prey time:0.09763503074645996
+to close to prey time:0.02236008644104004
+to close to prey time:0.021437883377075195
+to close to prey time:0.0443880558013916
+to close to prey time:0.08143401145935059
+to close to prey time:0.047534942626953125
+to close to prey time:0.0294802188873291
+JoinChainMember executed time:1.9073486328125e-5
+to close to prey time:0.032507896423339844
+Chainmember(Join) enabled time:0.3701968193054199
+nothing changed time:0.00041604042053222656
+nothing changed time:0.004828929901123047
+JoinChainMember switch to load state time:0.6576249599456787
+nothing changed time:0.09695601463317871
+ChainMember(Join) fallback time:0.2308950424194336
+nothing changed time:0.08986902236938477
+Transfer for Chainmember successful time:9.608268737792969e-5
+nothing changed time:0.07752609252929688
+Transfer for JoinChainMember successful time:0.8371691703796387
+JoinChainMember executed time:0.06988406181335449
+nothing changed time:0.0638420581817627
+nothing changed time:0.00020003318786621094
+Chainmember(Join) enabled time:7.891654968261719e-5
+JoinChainMember executed time:0.0013082027435302734
+Chainmember(Join) enabled time:0.0002968311309814453
+nothing changed time:0.0022759437561035156
+nothing changed time:0.03149914741516113
+Chainmember(Join) enabled time:0.0001881122589111328
+prey detected time:0.09911394119262695
+to close to prey time:0.04144001007080078
+nothing changed time:0.00010800361633300781
+nothing changed time:0.00010991096496582031
+to close to prey time:0.0453031063079834
+to close to prey time:0.03452610969543457
+to close to prey time:0.029301166534423828
+nothing changed time:0.44281816482543945
+nothing changed time:0.00048089027404785156
+Chainmember(Join) enabled time:0.09536910057067871
+nothing changed time:0.043530941009521484
+JoinChainMember fallback time:0.056088924407958984
+nothing changed time:0.047657012939453125
+prey detected time:0.005504131317138672
+prey detected time:0.06811094284057617
+to close to prey time:0.021939992904663086
+to close to prey time:0.1027979850769043
+to close to nest time:0.045211076736450195
+to close to nest time:0.0002319812774658203
+to close to nest time:0.0002319812774658203
+to close to prey time:0.0034439563751220703
+to close to prey time:0.00032591819763183594
+to close to prey time:0.07333803176879883
+nothing changedexplorationFirst time:0.4275839328765869
+to close to prey time:1.5974044799804688e-5
+nothing changedexploration time:0.019421100616455078
+to close to prey time:0.024389028549194336
+to close to prey time:0.026304960250854492
+to close to prey time:0.014487981796264648
+to close to prey time:0.03849601745605469
+to close to prey time:0.0002560615539550781
+nothing changed time:0.019639968872070312
+to close to prey time:0.05854916572570801
+to close to prey time:0.09043693542480469
+to close to prey time:0.09667396545410156
+to close to prey time:0.033151865005493164
+to close to prey time:0.03129291534423828
+nothing changedexploration time:0.10922598838806152
+nothing changedexploration time:0.09151196479797363
+to close to prey time:0.07867693901062012
+to close to prey time:0.08958792686462402
+Timeout executedexploration time:0.09288620948791504
+nothing changedexploration time:0.08645105361938477
+to close to prey time:0.03729510307312012
+to close to prey time:0.011338949203491211
+JoinChainMember executed time:0.023167133331298828
+prey detected time:0.06834793090820312
+to close to prey time:0.05969500541687012
+to close to prey time:0.03454303741455078
+to close to prey time:0.02041792869567871
+Chainmember(Join) enabled time:0.6816151142120361
+to close to prey time:0.008346080780029297
+to close to prey time:0.10661911964416504
+to close to prey time:0.039392948150634766
+Chainmember(join) fallback time:0.005883932113647461
+to close to prey time:0.0024209022521972656
+to close to prey time:0.10441708564758301
+to close to prey time:0.00026798248291015625
+nothing changedexploration time:0.018429040908813477
+nothing changedexploration time:0.004384040832519531
+
