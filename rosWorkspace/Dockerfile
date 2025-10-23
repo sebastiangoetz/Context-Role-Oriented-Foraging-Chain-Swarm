@@ -36,13 +36,4 @@ RUN ln -s Context-Role-Oriented-Foraging-Chain-Swarm/rosWorkspace ros_ws
 
 RUN cd ros_ws \
     && chmod +x build.sh \
-    && ./build.sh
-
-RUN cd Context-Role-Oriented-Foraging-Chain-Swarm \
-    && git reset --hard
-  
-RUN cd ros_ws \
-    && chmod +x build.sh \
-    && ./build.sh \
-    && source install/setup.bash \
-    && argos3 -c bridge_example.argos
+    && ./build.sh 
