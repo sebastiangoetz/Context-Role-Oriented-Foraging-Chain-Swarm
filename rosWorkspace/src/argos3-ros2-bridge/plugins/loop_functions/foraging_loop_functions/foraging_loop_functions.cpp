@@ -15,6 +15,7 @@ CForagingLoopFunctions::CForagingLoopFunctions() :
    m_unCollectedFood(0),
    m_nEnergy(0),
    m_unEnergyPerFoodItem(1),
+   m_preyPosition(5,1),
    m_unEnergyPerWalkingRobot(1) {
 }
 
@@ -36,9 +37,7 @@ void CForagingLoopFunctions::Init(TConfigurationNode& t_node) {
       m_pcRNG = CRandom::CreateRNG("argos");
       /* Distribute uniformly the items in the environment */
       for(UInt32 i = 0; i < unFoodItems; ++i) {
-         m_cFoodPos.push_back(
-            CVector2(4,
-                     1));
+         m_cFoodPos.push_back(m_preyPosition);
       }
    }
    catch(CARGoSException& ex) {
@@ -60,8 +59,7 @@ void CForagingLoopFunctions::Reset() {
    m_cOutput << "# clock\twalking\tresting\tcollected_food\tenergy" << std::endl;
    /* Distribute uniformly the items in the environment */
    for(UInt32 i = 0; i < m_cFoodPos.size(); ++i) {
-      m_cFoodPos[i].Set(4,
-                        1);
+      m_cFoodPos[i].Set(m_preyPosition.GetX(), m_preyPosition.GetY());
    }
 }
 
@@ -121,8 +119,7 @@ void CForagingLoopFunctions::PreStep() {
          if (sFoodData.Unload) {
             /* Place food item on the ground */
             if (cPos.GetX() <= -2.5) {
-              m_cFoodPos[sFoodData.FoodItemIdx].Set(4,
-                                                  1);
+              m_cFoodPos[sFoodData.FoodItemIdx].Set(m_preyPosition.GetX(), m_preyPosition.GetY());
             }
             else {
               m_cFoodPos[sFoodData.FoodItemIdx].Set(cPos.GetX(),

@@ -14,9 +14,9 @@ robotSelf2 = Robot("dummy", 2002, false, false, Position(0,0), false, false, fal
 # Begin Precompilation of Teams to reduce delay
 @assignRoles SingleRobotChainTeam begin
 	name = 2
-	nest = nest
+	nest >> Nest()
 	robotSelf >> ChainMember()
-	nest >> Prey()
+	Position(1,2) >> Prey()
 end 
 @assignRoles ChainTeam begin
 	name = 3

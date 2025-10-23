@@ -57,10 +57,8 @@ end
 
 @newDynamicTeam SingleRobotChainTeam begin
 	@IDAttribute ID::Int64
-	@relationalAttributes begin
-		nest::Position
-	end
-	@role ChainMember << Robot [1] begin	end
+	@role Nest << Position [1] begin end
+	@role ChainMember << Robot [1] begin end
 	@role Prey << Position [1] begin end
 	@role Load << Object [0..1] begin end
 end

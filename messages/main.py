@@ -77,6 +77,7 @@ while(True):
     # end = time.time()
     # with open("timeMSG.txt", "a", encoding="utf-8") as f:
     #     f.write("time:"+ str(end-start)+"\n")
+    
     time.sleep(0.1)
 
 robotSupervisor.destroy_node()

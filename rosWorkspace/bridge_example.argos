@@ -103,26 +103,19 @@
            source="loop_functions"
            pixels_per_meter="50" />
 
-    <light id="light"
-           position="8.9,2.7,0.5"
-           orientation="0,0,0"
-           color="green"
-           intensity="3.0"
-           medium="leds" />
-
     <!-- Place a foot-bot in the origin and bind it to the controller -->
 
     <!--foot-bot id="Prey">
       <body position="4,1,0" orientation="0,0,0" />
       <controller config="lrb"/>
     </foot-bot-->
-    <light id="light_1"
-           position="4,1,0.2"
+    <light id="Prey"
+           position="5,1,0.2"
            orientation="0,0,0"
            color="red"
            intensity="1.0"
            medium="leds" />
-    <light id="light_2"
+    <light id="Nest"
            position="-3,1.2,0.2"
            orientation="0,0,0"
            color="orange"
@@ -134,9 +127,9 @@
     </foot-bot-->
 
     <distribute>
-      <position method="uniform" min="-2.5,-1,0" max="2,2,0" />
+      <position method="uniform" min="-2.5,-1,0" max="3,2,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="7" max_trials="100">
+      <entity quantity="4" max_trials="100">
         <foot-bot id="fb_">
           <controller config="lrb" />
         </foot-bot>

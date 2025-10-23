@@ -36,7 +36,7 @@ function assignSingleRobotChainTeams(prey)
 	global nest, robotSelf
 	@assignRoles SingleRobotChainTeam begin
 		name = 2
-		nest = nest
+		nest >> Nest()
 		robotSelf >> ChainMember()
 		prey >> Prey()
 	end 
@@ -51,7 +51,7 @@ function assignSingleRobotChainTeams(prey, load)
 	global nest, robotSelf
 	@assignRoles SingleRobotChainTeam begin
 		name = 2
-		nest = nest
+		nest >> Nest()
 		robotSelf >> ChainMember()
 		prey >> Prey()
 		load >> Load()
@@ -143,7 +143,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	end
 
 
-	if getDistance(robotSelf.position, nest) < (NEST_AND_PREY_LOADING_RANGE+0.05)
+	if getDistance(robotSelf.position, nest) < (NEST_AND_PREY_LOADING_RANGE+0.15)
 		println("To close to nest")
 		open("time.txt", "a") do file
 			write(file, "to close to nest")
@@ -151,7 +151,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 
 	# check that robot is not to close to prey before before trigger role changes 
 	# exclude Joiner, because no prey setted in this case
-	elseif !timeout && getFirstTeam(robotSelf) !== nothing && getObjectsOfRole(getFirstTeam(robotSelf), Prey) != [] && getDistance(robotSelf.position, getObjectsOfRole(getFirstTeam(robotSelf), Prey)[1]) < (NEST_AND_PREY_LOADING_RANGE+0.05)
+	elseif !timeout && getFirstTeam(robotSelf) !== nothing && getObjectsOfRole(getFirstTeam(robotSelf), Prey) != [] && getDistance(robotSelf.position, getObjectsOfRole(getFirstTeam(robotSelf), Prey)[1]) < (NEST_AND_PREY_LOADING_RANGE+0.15)
 		println("To close to prey")
 		if hasRole(robotSelf, JoinChainMember, JoinChainTeam) 
 			disassignJoinChainTeams()
@@ -447,8 +447,8 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	#4+5. Execute (Operation im Modell anhand empfangener Nachrichten und Sensordaten)
 
 	# 0 Exploration
-	areaPos1 = Position(2,0)
-	areaPos2 = Position(5,3)
+	areaPos1 = Position(3,0) # do not change to values<0 (otherwise tests may crash)
+	areaPos2 = Position(6,2) # do not change to values<0 (otherwise tests may crash)
 	if getRoles(robotSelf) === nothing
 		position = Position(rand(areaPos1.x:areaPos2.x),rand(areaPos1.y:areaPos2.y))
 		while getDistance(position, robotSelf.position) <= MIN_TRANSFERPOINT_DISTANCE
