@@ -1,4 +1,5 @@
 FROM osrf/ros:jazzy-desktop-full
+EXPOSE 3004
 
 # Change the default shell to Bash
 SHELL [ "/bin/bash" , "-c" ]
@@ -37,3 +38,32 @@ RUN ln -s Context-Role-Oriented-Foraging-Chain-Swarm/rosWorkspace ros_ws
 RUN cd ros_ws \
     && chmod +x build.sh \
     && ./build.sh 
+
+RUN sudo apt install -y python3.12 python3.12-venv ros-dev-tools 
+
+RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
+    && tar xzf julia-1.10.10-linux-x86_64.tar.gz
+
+ENV PATH="julia-1.10.10/bin:$PATH"
+
+RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
+
+RUN cd Context-Role-Oriented-Foraging-Chain-Swarm/runtimemodel \
+    && python3 -m venv . \
+    && source bin/activate \
+    && source /opt/ros/jazzy/setup.bash \
+    && source ../rosWorkspace/install/setup.bash \
+    && pip install pyyaml pyecore numpy 
+
+RUN cd Context-Role-Oriented-Foraging-Chain-Swarm/webapp \
+    && python3 -m venv . \
+    && source bin/activate \
+    && source /opt/ros/jazzy/setup.bash \
+    && source ../rosWorkspace/install/setup.bash \
+    && pip install -r requirements.txt 
+    
+RUN cd Context-Role-Oriented-Foraging-Chain-Swarm/webapp \
+    && source bin/activate \
+    && source /opt/ros/jazzy/setup.bash \
+    && source ../rosWorkspace/install/setup.bash \
+    && python3 swarmDisplay.py

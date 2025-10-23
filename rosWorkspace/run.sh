@@ -5,4 +5,4 @@ docker run -it --net=host --ipc=host --privileged \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --volume="${XAUTHORITY}:/root/.Xauthority" \
     argos3-ros2-fchain \
-    bash -c "argos3 -c ros_ws/bridge_example.argos"
+    bash -c "cd ros_ws && source install/setup.bash && argos3 -c bridge_example.argos"

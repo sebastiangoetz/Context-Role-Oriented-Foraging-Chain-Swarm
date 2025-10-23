@@ -27,4 +27,6 @@ runtimemodel/modelImpl/__pycache__/
 Generator/__pycache__/
 robotModel/
 geckodriver.log
-
+rosWorkspace/build
+rosWorkspace/install
+rosWorkspace/log
