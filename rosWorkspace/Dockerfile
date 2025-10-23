@@ -23,27 +23,26 @@ RUN cd Context-Role-Oriented-Foraging-Chain-Swarm \
     && cd Dependencies \
     && tar -zxf gsl-latest.tar.gz \
     && cd gsl-2.8 \
-    && mkdir $HOME/gsl \
-    && ./configure --prefix=$HOME/gsl \
+    && mkdir /root/gsl \
+    && ./configure --prefix=/root/gsl \
     && make \
     && make check \
     && make install 
 
-ENV LD_LIBRARY_PATH="$HOME/gsl/lib:$LD_LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="/root/gsl/lib:$LD_LIBRARY_PATH"
 
 # Build ARGoS3-ROS2-Bridge
 RUN ln -s Context-Role-Oriented-Foraging-Chain-Swarm/rosWorkspace ros_ws 
 
-WORKDIR $HOME/ros_ws/
+RUN cd ros_ws \
+    && chmod +x build.sh \
+    && ./build.sh
 
-RUN source /opt/ros/jazzy/setup.bash \
-    && colcon build
-
-RUN mv src/argos3-ros2-bridge/CMakeLists.txt src/argos3-ros2-bridge/CMakeLists-Step1.txt\
-    && mv src/argos3-ros2-bridge/CMakeLists-Step2.txt src/argos3-ros2-bridge/CMakeLists.txt 
-    
-RUN source /opt/ros/jazzy/setup.bash \
-    && colcon build \
-    && source install/setup.bash
+RUN cd Context-Role-Oriented-Foraging-Chain-Swarm \
+    && git reset --hard
   
-RUN argos3 -c bridge_example.argos
+RUN cd ros_ws \
+    && chmod +x build.sh \
+    && ./build.sh \
+    && source install/setup.bash \
+    && argos3 -c bridge_example.argos
