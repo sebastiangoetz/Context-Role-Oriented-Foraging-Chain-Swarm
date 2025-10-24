@@ -318,7 +318,7 @@
         columns.forEach(column => {
             let value = robotData[column];
             let td = document.createElement("td");
-            
+            td.id = row.id+column
             // handle array attributes to write multiple values among each other
             if (Array.isArray(value)) {
                 let ul = document.createElement("ul");

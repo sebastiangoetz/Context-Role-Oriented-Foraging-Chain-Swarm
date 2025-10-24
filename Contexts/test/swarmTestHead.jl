@@ -131,7 +131,7 @@ robotSelf = Robot("test", 2000, false, false, Position(0,0), false, false, false
 
         # robot close enough  --> trigger load
         data = DatafromSRL(2.3,1,false, false, true)
-        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.5, 1.0]]")
+        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.4, 1.0]]")
         goal = mapeLoop(data, message, false)
         @test hasRole(robotSelf, JoinChainMember, JoinChainTeam)
         @test hasRole(robotSelf, Head, ChainTeam)
@@ -140,7 +140,7 @@ robotSelf = Robot("test", 2000, false, false, Position(0,0), false, false, false
 
         # wait until other robot unloads
         data = DatafromSRL(2.3,1,false, false, true)
-        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.5, 1.0]]")
+        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.4, 1.0]]")
         goal = mapeLoop(data, message, false)
         @test hasRole(robotSelf, JoinChainMember, JoinChainTeam)
         @test hasRole(robotSelf, Head, ChainTeam)
@@ -150,7 +150,7 @@ robotSelf = Robot("test", 2000, false, false, Position(0,0), false, false, false
         # ----------------- INTERMEDIATE --------------------
         # transfer successfull --> switch to intermediate with load
         data = DatafromSRL(2.3,1,true, false, true)
-        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.5, 1.0]]")
+        message = JSON.parse("[[\""*msg_ChainmemberDetected*"\", 2.4, 1.0]]")
         goal = mapeLoop(data, message, false)
         @test !hasRole(robotSelf, JoinChainMember, JoinChainTeam)
         @test hasRole(robotSelf, Intermediate, ChainTeam)

@@ -109,19 +109,30 @@ Verify Installation
     - install required pip packages (pip install -r requirements.txt)
  
 ## Run Application
+### Run Simulation 
 - in /ros_ws run: 
-    - source install/setup.bash
-    - argos3 -c bridge_example.argos
+    - ```source install/setup.bash```
+    - ```argos3 -c bridge_example.argos```
     - start simulation by clicking the **play** button
-- in webapp run (absolutely necessary before starting the robots):
-    - source bin/activate
-    - python3 swarmDisplay.py
-    - connect to Webapp via link
-    - do not worry that the page is currently empty - boxes will appear as soon as you startup the robots
 
-- ./startup.sh [footbot-name] (e.g. fb_0)
-- current simulation has red light as prey, orange ligth as nest and fb_1 to fb_6 for the Chain Task
-- so start the command above for all robots in seperate terminals 
+### Run Robots via startup script
+- in main folder run:
+    - ```source ~/ros_ws/install/setup.bash```
+    - ```source ./startup/bin/activate```
+    - ```python3 ./startup/automatedStartup.py``` (adjust number of iterations depending on the number of robots)
+- runs Webapp and the Robots with its 3 Components successive
+- open Dashboard: http://localhost:5000/
+
+### Run Robots one by one (alternative to startup script --> seperate output for each Robot)
+- [run simulation](#run-simulation)
+- in webapp run (absolutely necessary before starting the robots):
+    - ```source bin/activate```
+    - ```python3 swarmDisplay.py```
+    - connect to Webapp via link
+
+- ```./startup.sh [footbot-name]``` (e.g. fb_0)
+- current simulation has red light as **Prey**, orange ligth as **Nest** and fb_0 to fb_6 for the Chain Task
+- so start the command above for all 7 robots in seperate terminals 
 - wait until robot is driving before starting the next one!! (otherwise tmux is confused) 
 - left pane shows output from Swarm Element Loop
 - right top Pane shows output from Single Robot Loop
@@ -129,11 +140,82 @@ Verify Installation
 
 - stop Application:
     - Strg+b d  (to detach from tmux)
-    - tmux kill-server
+    - ```tmux kill-server```
 
-- If you just start one robot, it will drive between Prey and Nest alone
-- If you start multiple robots, the will form a chain
+### Run Tests
+- in main folder run:
+    - ```source ~/ros_ws/install/setup.bash```
+    - ```source ./startup/bin/activate```
+- run Tests with (e.g.):
+    - ```python3 RobotWithLoadDetected.py```
+- Test: PreyDetected.py runs Test only once, because this Action can not be reseted without restarting the application
+- Execution Times are stored in associated files (e.g. time_RobotWithLoadDetected.txt)
+- After running all tests the ExecutionTime can be plotted with ./ExecutionTimeMeasurements/timePlotToolFSET_4Cases.py
+- For that execute in main folder:
+    - ```source ./ExecutionTimeMeasurements/bin/activate```
+    - ```python3 ./ExecutionTimeMeasurements/timePlotToolFSET_4Cases.py```
 
-Here's how the running application looks like for 3 robots that successfully formed a foraging chain.
+### Create SEL-SRL-MSG Execution Time Plot
+- uncomment lines 37 and 77-79 in messages/main.py
+- uncomment lines 95-98 and 135-139 in runtimemodel/main.py
+- run simulation ([here](#run-simulation)) and execute automatedStartup.py as mentioned before [here](#run-robots-via-startup-script)
+- execution times of the SEL will always be stored in time.txt
+- execution times of SRL will be stored in timeSRL.txt
+- execution times of Messages Component will be stored in timeMSG.txt
+- after running the application for a while, stop
+- plot times with ```python3 ExecutionTimeMeasurement/timePlotToolSEL_SRL_MSG.py``` executed from the main folder
 
-<img alt="foraging-chain" src="https://github.com/user-attachments/assets/b74e760d-5b4d-4cf0-b03c-bf71a49cc38f" />
+### Create Plot for Scalability
+- run application ([run simulation](#run-simulation) & [startup](#run-robots-via-startup-script)) for different numbers of robots ([change robot number](#change-robot-number-in-simulation))
+- after each run, save the times.txt with another name (e.g. timeXRobots.txt)
+- after having 4 measurements, plot them with ```python3 ExecutionTimeMeasurement/timePlotToolScalability.py``` (change names of the used timeXRobots.txt files)
+
+
+## Change Robot Number in Simulation
+- in your copied ROS Workspace under ros_ws change the following parameters
+- in ros_ws_/bridge_example.argos:
+    - change ```<position>``` of the Prey light
+    - change the distributioin of robots by adjusting the ```<position>``` min and max Positions and the ```<entity>``` quantity
+    ```html
+    <light id="Prey"
+            position="9,1,0.2"
+            orientation="0,0,0"
+            color="red"
+            intensity="1.0"
+            medium="leds" />
+    ...   
+    <distribute>
+        <position method="uniform" min="-2.5,-2.0,0" max="11.0,4.0,0" />
+        <orientation method="uniform" min="0,0,0" max="360,0,0" />
+        <entity quantity="15" max_trials="100">
+            <foot-bot id="fb_">
+            <controller config="lrb" />
+            </foot-bot>
+        </entity>
+        </distribute> 
+    ``` 
+- in ros_ws/src/argos3-ros2-bridge/plugins/loop_functions/foraging_loop_functions/foraging_loop_functions.cpp: change the positioning of the load (black circles) 
+    - set the ```m_preyPosition(9,1),``` in line 9 to the same position as the Prey light 
+    - in ros_ws run: ```colcon build --packages-select argos3_ros2_bridge```
+    - run ```source install/setup.bash```
+    - run ``` argos3 -c bridge_example.argos ``` to see if it worked
+- in Contexts/swarmElementLoop/MAPE.jl adjust lines Explorartion Area (lines 450-451) to a new area (optimally around prey; otherwise, the robots need unduly long to find the prey and start forming a chain)
+    ```julia
+    # 0 Exploration
+    areaPos1 = Position(5,0) 
+    areaPos2 = Position(11,4) 
+        if getRoles(robotSelf) === nothing
+            ...
+    ```
+
+
+## Demo
+
+Short Teaser:
+
+[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/YxY3P1U7E8I)
+
+Explanation 1:
+
+[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/M2knKsVhV9w)
+
