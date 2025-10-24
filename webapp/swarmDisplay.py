@@ -54,7 +54,7 @@ def service_connection(key, mask):
         recv_data = sock.recv(BUFFER_SIZE)  # Should be ready to read
         if recv_data:
             data.outb += recv_data
-            print(f"Received from {data.addr}: {recv_data}")
+            #print(f"Received from {data.addr}: {recv_data}")
             socketio.emit('updateSensorData', recv_data.decode())
         else:
             print(f"Closing connection to {data.addr}")

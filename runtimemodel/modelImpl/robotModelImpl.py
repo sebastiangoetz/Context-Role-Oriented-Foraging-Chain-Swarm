@@ -106,7 +106,7 @@ class ModelImpl(Model):
             robot.yTarget = float(yTarget)
             print("Target setted " + str (xTarget) + " " + str(yTarget))
             for state in self.states:
-                if(state.getname() in stateName):
+                if(state.getname() == stateName):
                     robot.state = state
                     print("State setted " + state.getname())
             robot.ledColor = led

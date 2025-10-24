@@ -4,7 +4,7 @@ include("functions.jl")
 # Constants
 NEST_AND_PREY_LOADING_RANGE = 0.5
 MIN_TRANSFERPOINT_DISTANCE = 0.2
-ROBOT_PROXIMITY = 0.25	# depending on the light blob of the other robot, not on the outer radius of the robots
+ROBOT_PROXIMITY = 0.2	# depending on the light blob of the other robot, not on the outer radius of the robots
 
 # Message Types
 msg_joinerDetected = "Joiner detected"
@@ -20,7 +20,7 @@ first_time = true
 
 function disassignAllRoles()
     if getRoles(robotSelf) !== nothing
-        println(keys(getRoles(robotSelf)[nothing]))
+        #println(keys(getRoles(robotSelf)[nothing]))
 		disassignRoles(ChainTeam, 3)
 		if getRoles(robotSelf) !== nothing
 			teams = keys(getRoles(robotSelf)[nothing])
@@ -36,7 +36,7 @@ function assignSingleRobotChainTeams(prey)
 	global nest, robotSelf
 	@assignRoles SingleRobotChainTeam begin
 		name = 2
-		nest = nest
+		nest >> Nest()
 		robotSelf >> ChainMember()
 		prey >> Prey()
 	end 
@@ -51,7 +51,7 @@ function assignSingleRobotChainTeams(prey, load)
 	global nest, robotSelf
 	@assignRoles SingleRobotChainTeam begin
 		name = 2
-		nest = nest
+		nest >> Nest()
 		robotSelf >> ChainMember()
 		prey >> Prey()
 		load >> Load()
@@ -87,7 +87,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	# add load state of the robot into swarm-model and robot attributes 
 	if getRoles(robotSelf) !== nothing
 		if dataMiddle.load == true
-			println(keys(getRoles(robotSelf)[nothing]))
+			#println(keys(getRoles(robotSelf)[nothing]))
 			teams = keys(getRoles(robotSelf)[nothing])
 			for team in teams
 				if isempty(getObjectsOfRole(team, Load))
@@ -112,6 +112,10 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 		end
 	end
 
+	# if goalreached in SRL switches from true to false --> it is sure, that the goal is given
+	if (robotSelf.goalReached && !dataMiddle.goalReached)
+		robotSelf.goalGiven = true
+	end
 	# add Information from Single-Robot-Loop into robotSelf data structure
 	robotSelf.goalReached=dataMiddle.goalReached
 	robotSelf.load=dataMiddle.load
@@ -139,7 +143,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	end
 
 
-	if getDistance(robotSelf.position, nest) < (NEST_AND_PREY_LOADING_RANGE+0.05)
+	if getDistance(robotSelf.position, nest) < (NEST_AND_PREY_LOADING_RANGE+0.15)
 		println("To close to nest")
 		open("time.txt", "a") do file
 			write(file, "to close to nest")
@@ -147,7 +151,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 
 	# check that robot is not to close to prey before before trigger role changes 
 	# exclude Joiner, because no prey setted in this case
-	elseif !timeout && getFirstTeam(robotSelf) !== nothing && getObjectsOfRole(getFirstTeam(robotSelf), Prey) != [] && getDistance(robotSelf.position, getObjectsOfRole(getFirstTeam(robotSelf), Prey)[1]) < (NEST_AND_PREY_LOADING_RANGE+0.05)
+	elseif !timeout && getFirstTeam(robotSelf) !== nothing && getObjectsOfRole(getFirstTeam(robotSelf), Prey) != [] && getDistance(robotSelf.position, getObjectsOfRole(getFirstTeam(robotSelf), Prey)[1]) < (NEST_AND_PREY_LOADING_RANGE+0.15)
 		println("To close to prey")
 		if hasRole(robotSelf, JoinChainMember, JoinChainTeam) 
 			disassignJoinChainTeams()
@@ -168,7 +172,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			end	
 		end
 		open("time.txt", "a") do file
-			write(file, "ChainMember perceives robot in Loading state")
+			write(file, "Release Load (JoinChainTeam:ChainMember)")
 		end
 
 	# JoinChainMember is approximated --> switch to load state
@@ -181,21 +185,21 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			end		
 		end
 		open("time.txt", "a") do file
-			write(file, "JoinChainMember switch to load state")
+			write(file, "Receive Load (JoinChainTeam:JoinChainMember)")
 		end
 	
 	# robot with load disappeares --> fall back to last meaningful state
-	elseif hasRole(robotSelf, JoinChainMember, JoinChainTeam) && infoInMessage(message,  msg_robotWithLoadDetected)==false && infoInMessage(message, msg_ChainmemberDetected)==false && !robotSelf.load
+	elseif hasRole(robotSelf, JoinChainMember, JoinChainTeam) && !robotSelf.load && ((infoInMessage(message,  msg_robotWithLoadDetected)==false && infoInMessage(message, msg_ChainmemberDetected)==false) || timeout) 
 		# if robot in ChainTeam or SingleRobotChainTeam --> remember old knowledge and drive to prey/pred
 		disassignJoinChainTeams()
-		println(message)
+		#println(message)
 		println("disassign JoinChain1")
 		open("time.txt", "a") do file
-			write(file, "JoinChainMember fallback")
+			write(file, "deactivateJoinChain() (JoinChainTeam:JoinChainMember)")
 		end
 
 	# joiner disappeares --> fall back to last meaningful state
-	elseif hasRole(robotSelf, ChainMember, JoinChainTeam) && infoInMessage(message, msg_joinerDetected)==false && infoInMessage(message, msg_joinerLoadingDetected)==false
+	elseif hasRole(robotSelf, ChainMember, JoinChainTeam) && ((infoInMessage(message, msg_joinerDetected)==false && infoInMessage(message, msg_joinerLoadingDetected)==false) || timeout)
 		@changeRoles ChainTeam 3 begin
 			getDynamicTeam(JoinChainTeam, 77) << RobotJoining
 		end
@@ -203,7 +207,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 		robotSelf.goalGiven = false
 		println("disassign JoinChain2")
 		open("time.txt", "a") do file
-			write(file, "Chainmember(join) fallback")
+			write(file, "deactivateJoinChain() (JoinChainTeam:ChainMember)")
 		end
 	
 	# timeout at pred/succ load/release point
@@ -222,11 +226,11 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			end
 			println("timeout: succ removed")
 
-		# Robot has no Prey in History --> switch back to Exploration
-		elseif getDynamicTeam(ChainTeam, 3) !== nothing && isempty(getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Prey)) 
+		# Robot has no Prey in History and has no load --> switch back to Exploration
+		elseif getDynamicTeam(ChainTeam, 3) !== nothing && isempty(getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Prey)) && !robotSelf.load
 			disassignAllRoles()
 			println("timeout: only chain disassigned")
-
+		
 		# Robot is Head or Tail and prey is known --> switch back to SingleRobotChainTeam
 		# TODO: more history --> put it here
 		elseif hasRole(robotSelf, Head, ChainTeam) || hasRole(robotSelf, Tail, ChainTeam)
@@ -240,7 +244,6 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 				assignSingleRobotChainTeams(prey)
 			end
 
-		
 		# Robot is intermediate without load and knows the prey --> remove predecessor, switch to head
 		elseif !robotSelf.load && hasRole(robotSelf, Intermediate, ChainTeam)
 			if !isempty(getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Predecessor))
@@ -256,7 +259,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 		end
 		robotSelf.goalGiven = false
 		open("time.txt", "a") do file
-			write(file, "Timeout executed")
+			write(file, "timeout")
 		end
 
 	# prey detected initially or later on --> assign SingleRobot chain team, disassign JoinChainTeam
@@ -315,7 +318,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			disassignRoles(SingleRobotChainTeam, 2)
 		end
 		open("time.txt", "a") do file
-			write(file, "Transfer for JoinChainMember successful")
+			write(file, "Load received (JoinChainTeam:JoinChainMember)")
 		end
 
 	# Load transferred successfully: Chainmember
@@ -359,7 +362,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			disassignRoles(SingleRobotChainTeam, 2)
 		end
 		open("time.txt", "a") do file
-			write(file, "Transfer for Chainmember successful")
+			write(file, "Load released (JoinChainTeam:ChainMember)")
 		end
 		
 	# Robot with load detected	
@@ -392,7 +395,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			println("wrong robot with load detected")
 		end
 		open("time.txt", "a") do file
-			write(file, "JoinChainMember executed")
+			write(file, "Robot with Load perceived")
 		end
 	# refresh RobotWithLoad Position
 	elseif !robotSelf.load && infoInMessage(message, msg_ChainmemberDetected)!=false && hasRole(robotSelf, JoinChainMember, JoinChainTeam)
@@ -404,7 +407,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			otherRobot >> ChainMember()
 		end
 		open("time.txt", "a") do file
-			write(file, "Robot with load Position updated")
+			write(file, "Drive to Perceived Robot (update)")
 		end
 
 	# enable Join procedure, only if no other robot wich is already part of the JoinChainTeam is perceived
@@ -433,7 +436,7 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 			println("robot on rotate: Don't disturb :)")
 		end
 		open("time.txt", "a") do file
-			write(file, "Chainmember(Join) enabled")
+			write(file, "Joiner perceived")
 		end
 	else
 		open("time.txt", "a") do file
@@ -444,16 +447,18 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 	#4+5. Execute (Operation im Modell anhand empfangener Nachrichten und Sensordaten)
 
 	# 0 Exploration
+	areaPos1 = Position(3,0) # do not change to values<0 (otherwise tests may crash)
+	areaPos2 = Position(6,2) # do not change to values<0 (otherwise tests may crash)
 	if getRoles(robotSelf) === nothing
-		position = Position(rand(3:5),rand(0:2))
+		position = Position(rand(areaPos1.x:areaPos2.x),rand(areaPos1.y:areaPos2.y))
 		while getDistance(position, robotSelf.position) <= MIN_TRANSFERPOINT_DISTANCE
-			position = Position(rand(3:5),rand(0:2))
+			position = Position(rand(areaPos1.x:areaPos2.x),rand(areaPos1.y:areaPos2.y))
 			println("same Position")
 		end
 		println("drive randomly "*string(position))
 		open("time.txt", "a") do file
 			if first_time 
-				write(file, "explorationFirst")
+				write(file, "First Exploration")
 				first_time = false
 			end
 		end
@@ -479,40 +484,46 @@ function mapeLoop(dataMiddle, message, timeout) #::Tuple{Union{Position, Nothing
 		end
 		return (nothing, "waiting", "magenta")
 
-	# 3 Roboter ist in SingleRobot Chain Team
+	# 3 Roboter is in SingleRobot Chain Team
 	elseif hasRole(robotSelf, ChainMember, SingleRobotChainTeam) && !robotSelf.load && !robotSelf.goalReached
 		robotSelf.goalGiven = true
 		pos = getObjectsOfRole(getDynamicTeam(SingleRobotChainTeam, 2), Prey)[1]
 		return pos, "driving", "black"
 	
 	elseif robotSelf.load && !robotSelf.goalGiven
+		# set goal Given to true if goal reached is already false - otherwise it would be set in the next iteration
+		if !robotSelf.goalReached 
+			robotSelf.goalGiven = true
+		end
 		# Robot is the only one or the tail --> drive to nest
 		if hasRole(robotSelf, ChainMember, SingleRobotChainTeam) || hasRole(robotSelf, Tail, ChainTeam)
-			robotSelf.goalGiven = true
 			pos = getObjectsOfRole(getDynamicTeam(ChainTeam, 3), Nest)[1]
 			return pos, "driving", "yellow"
 		# Robot is not alone and not tail (robot is head or intermediate)--> drive to transferpoint
 		else
-			robotSelf.goalGiven = true
 			pos = getRoleOfTeam(getDynamicTeam(ChainTeam, 3), Successor).transferpoint_release
 			return pos, "driving", "yellow"
 		end
 	elseif !robotSelf.load && !robotSelf.goalGiven
+		# set goal Given to true if goal reached is already false - otherwise it would be set in the next iteration
+		if !robotSelf.goalReached 
+			robotSelf.goalGiven = true
+		end
 		println("Load released")
 		# Robot is the only one or the head --> drive to Prey
 		if hasRole(robotSelf, ChainMember, SingleRobotChainTeam) || hasRole(robotSelf, Head, ChainTeam)
-			robotSelf.goalGiven = true
 			pos = getObjectsOfRole(getFirstTeam(robotSelf), Prey)[1]
 			return pos, "driving", "black"
 		# Robot is not alone and not head --> drive to transferpoint
 		else
-			robotSelf.goalGiven = true
 			pos = getRoleOfTeam(getDynamicTeam(ChainTeam, 3), Predecessor).transferpoint_receive
 			return pos, "driving", "black"
 		end
+	# UDP wahrscheinlich das Problem
+	# goal given auf true setzen, wenn goal reached von true auf false wechselt
 
 	# Any goal reached --> waiting
-	elseif robotSelf.goalReached
+	elseif robotSelf.goalReached # TODO check correctnes of goal reached in case of huge delay between applications
 		println("Roles: " * string(keys(getRoles(robotSelf)[nothing])) * " wait")
 		robotSelf.waiting = true
 		#load at the prey

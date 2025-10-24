@@ -28,6 +28,7 @@ private:
    std::vector<CVector2> m_cFoodPos;
    CFloorEntity* m_pcFloor;
    CRandom::CRNG* m_pcRNG;
+   CVector2 m_preyPosition;
 
    std::string m_strOutput;
    std::ofstream m_cOutput;
