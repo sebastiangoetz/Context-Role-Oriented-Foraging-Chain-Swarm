@@ -29,6 +29,12 @@ To see a running simulation with 4 robots, we provide an easy to use Docker Imag
 
 For a closer investigation (e.g., to reproduce the measurements from the paper), you need to follow the installation instructions below. We included the Dockerfile in the rosWorkspace folder as a reference, as the installation is quite complicated.
 
+## Demo
+
+Short Teaser: [Watch the video](https://youtu.be/YxY3P1U7E8I)
+
+Explanation: [Watch the video](https://youtu.be/M2knKsVhV9w)
+
 ## System Requirements
 
 - Ubuntu 24.04.2 LTS
@@ -211,15 +217,3 @@ Verify Installation
         if getRoles(robotSelf) === nothing
             ...
     ```
-
-
-## Demo
-
-Short Teaser:
-
-[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/YxY3P1U7E8I)
-
-Explanation 1:
-
-[![Watch the video](https://git-st.inf.tu-dresden.de/stgroup/student-projects/2025/ma-adrian-scholze/-/blob/main/crom-models/thumbnailTeaser.png)](https://youtu.be/M2knKsVhV9w)
-
